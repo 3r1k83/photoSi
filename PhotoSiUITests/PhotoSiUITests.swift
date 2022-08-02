@@ -8,13 +8,15 @@
 import XCTest
 
 class PhotoSiUITests: XCTestCase {
+    let app = XCUIApplication()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
+        app.launch()
+        
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
@@ -38,4 +40,28 @@ class PhotoSiUITests: XCTestCase {
             }
         }
     }
+    // test a static text
+    func testStaticTexts() throws {
+    
+        let pickCountry = app.staticTexts["Pick your country"]
+        
+        XCTAssert(pickCountry.exists)
+
+        XCTAssertEqual(pickCountry.label, "Pick your country")
+
+    }
+    
+    // test the first loading and flow until the second view
+    func testBasicFlow() throws {
+        
+        let myTable = app.tables["countriesList"]
+        let row = myTable.cells.element(boundBy: 0)
+        row.tap()
+        let choosePictures = app.staticTexts["Choose pictures to upload"]
+        XCTAssert(choosePictures.exists)
+
+        let buttonAction = app.buttons["showActionSheet"]
+        XCTAssert(buttonAction.exists)
+    }
+    
 }
