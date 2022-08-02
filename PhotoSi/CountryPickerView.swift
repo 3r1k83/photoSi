@@ -24,7 +24,9 @@ struct CountryPickerView: View {
     
     var body: some View {
         
-        CustomNavBar(title: "Pick your country", content: {
+        NavigationView{
+            VStack{
+                Text("Pick your country")
                 List {
                     ForEach(searchResults, id: \.iso) { country in
                         NavigationLink(destination: ImagePickerView()) {
@@ -32,13 +34,25 @@ struct CountryPickerView: View {
                         }
                     }
                 }
-                .searchable(text: $searchText)
-//                .navigationTitle("Pick a Country")
-        }()
+                .onAppear() {
+                    UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 40)
+                }
+                .accessibilityIdentifier("countriesList")
+                    .searchable(text: $searchText)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Image("LogoPhotoSì")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100)
+                            Text("Pick your country")
+                        }
+                    }}
+        }.navigationViewStyle(.stack)
+
         .alert(isPresented: $viewModel.showAlert) {
             Alert(title: Text("Error"), message: Text (viewModel.countryListLoadingError ), dismissButton: .default(Text("OK")))
         }
-        )
     }
 }
 

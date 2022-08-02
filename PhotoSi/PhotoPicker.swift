@@ -49,7 +49,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
 
             if !results.isEmpty {
                 parent.itemProviders = []
-                parent.images = []
+//                parent.images = []
             }
             
             parent.itemProviders = results.map(\.itemProvider)

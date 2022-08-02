@@ -15,50 +15,22 @@ struct ImagePickerView: View {
     @State var sourceType:UIImagePickerController.SourceType = .camera
     
     @State var pickerResult: [UIImage] = []
-    @State var imageToUpload: UIImage?
-
+    @State var imageToUpload: UIImage = UIImage()
     
     var body: some View {
         NavigationView {
             VStack{
-                        List {
-                            ForEach(0..<pickerResult.count, id:\.self) { imageIdx in
-                                ImageUploadRow(image: pickerResult[imageIdx], uploadBar: "")
-//                                Image(uiImage: pickerResult[imageIdx])
-                            }.onDelete(perform: delete)
-                            if imageToUpload != nil {
-                                ImageUploadRow(image: imageToUpload!, uploadBar: "")
-                            }
-                        }
-
-                        .actionSheet(isPresented: $showActionSheet){
-                            ActionSheet(title: Text("Add a picture to your post"), message: nil, buttons: [
-                                //Button1
-                                
-                                .default(Text("Camera"), action: {
-                                    self.showImagePicker = true
-                                    self.sourceType = .camera
-                                }),
-                                //Button2
-                                .default(Text("Photo Library"), action: {
-                                    self.showImagePicker = true
-                                    self.sourceType = .photoLibrary
-                                }),
-                                
-                                //Button3
-                                .cancel()
-                                
-                            ])
-                        }.sheet(isPresented: $showImagePicker){
-                            if self.sourceType == .camera{
-                                CameraPicker(image: self.$imageToUpload, showImagePicker: self.$showImagePicker)
-                            }
-                            else{
-                                PhotoPicker(images: $pickerResult, selectionLimit: 50)
-                            }
-                        }
-               
-              
+                List {
+                    ForEach(0..<pickerResult.count, id:\.self) { imageIdx in
+                        ImageUploadRow(image: pickerResult[imageIdx], uploadBar: "")
+                    }.onDelete(perform: delete)
+//                    if imageToUpload != nil {
+//                        ImageUploadRow(image: imageToUpload, uploadBar: "")
+//                    }
+                }.padding(.top, -100)
+                    .onAppear() {
+                        UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 40)
+                    }
                 Button(action: {
                     showActionSheet = true
                 }){
@@ -69,19 +41,60 @@ struct ImagePickerView: View {
                         Text("Choose pictures to upload")
                             .font(.headline)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
+                    .frame(minWidth: 0, maxWidth: 350, minHeight: 0, maxHeight: 50)
                     .background(Color.cyan)
                     .foregroundColor(.white)
                     .cornerRadius(20)
                     .padding(.horizontal)
+                }.accessibilityIdentifier("showActionSheet")
+                .actionSheet(isPresented: $showActionSheet){
+                    ActionSheet(title: Text("Add a picture to your post"), message: nil, buttons: [
+                        //Button1
+                        .default(Text("Camera"), action: {
+                            self.showImagePicker = true
+                            self.sourceType = .camera
+                        }),
+                        //Button2
+                        .default(Text("Photo Library"), action: {
+                            self.showImagePicker = true
+                            self.sourceType = .photoLibrary
+                        }),
+                        
+                        //Button3
+                        .cancel()
+                        
+                    ])
+                }
+                
+                .sheet(isPresented: $showImagePicker){
+                    if self.sourceType == .camera{
+                        CameraPicker(image: self.$imageToUpload, showImagePicker: self.$showImagePicker, images:$pickerResult)
+                    }
+                    else{
+                        PhotoPicker(images: $pickerResult, selectionLimit: 50)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image("LogoPhotoSì")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100)
+                        .padding(.top, -100)
+//                        .padding(.bottom, -100)
+                    
+                    
                 }
             }
         }
+        .navigationViewStyle(.stack)
+        
     }
-
+    
     func delete(at offsets: IndexSet) {
         self.pickerResult.remove(atOffsets: offsets)
-       }
+    }
 }
 
 struct ImagePickerView_Previews: PreviewProvider {

@@ -10,9 +10,10 @@ import SwiftUI
 
 
 struct CameraPicker:UIViewControllerRepresentable {
-    @Binding var image: UIImage?
+    @Binding var image: UIImage
     @Binding var showImagePicker: Bool
-    
+    @Binding var images: [UIImage]
+
     typealias UIViewControllerType = UIImagePickerController
     typealias Coordinator = CameraPickerCoordinator
         
@@ -25,7 +26,7 @@ struct CameraPicker:UIViewControllerRepresentable {
     }
     
     func makeCoordinator() -> CameraPicker.Coordinator {
-        return CameraPickerCoordinator(image: $image, showImagePicker: $showImagePicker)
+        return CameraPickerCoordinator(image: $image, showImagePicker: $showImagePicker, parent:self)
     }
     
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<CameraPicker>) {}
@@ -36,12 +37,16 @@ struct CameraPicker:UIViewControllerRepresentable {
 
 
 class CameraPickerCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        @Binding var image: UIImage?
+        @Binding var image: UIImage
         @Binding var showImagePicker: Bool
     
-    init(image:Binding<UIImage?>, showImagePicker: Binding<Bool>) {
-            _image = image
-            _showImagePicker = showImagePicker
+    var parent: CameraPicker
+        
+    init(image:Binding<UIImage>, showImagePicker: Binding<Bool>, parent:CameraPicker ) {
+        _image = image
+        _showImagePicker = showImagePicker
+        self.parent = parent
+
     }
     
     
@@ -50,6 +55,7 @@ class CameraPickerCoordinator: NSObject, UINavigationControllerDelegate, UIImage
         if let uiimage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             image = uiimage
             showImagePicker = false
+            self.parent.images.append(uiimage)
         }
     }
     

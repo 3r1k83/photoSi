@@ -21,28 +21,59 @@ struct ImageUploadRow: View {
                     .scaledToFit()
                     .frame(height: 80)
                     .cornerRadius(10)
-                Button(action: {
-                    let imgData = image.jpegData(compressionQuality: 0.5)!
-                    viewModel.uploadImage(image: imgData)
-                }){
-                    
-                    Text("Upload")
-                        .font(.headline)
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 50, maxHeight: 50)
-                        .background(Color.cyan)
-                        .foregroundColor(.white)
-                        .cornerRadius(20)
-                        .padding(.horizontal)
+                if (viewModel.uploading){
+                    Button(action: {
+                        viewModel.stopUpload()
+                    }){
+                        Text("Stop")
+                            .font(.headline)
+                            .frame(minWidth: 0, maxWidth: 200, minHeight: 50, maxHeight: 50)
+                            .background(Color.cyan)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .padding(.horizontal)
+                    }.accessibilityIdentifier("uploadButton")
                 }
-            }.padding()
-            ProgressView("Uploading image...", value: $viewModel.uploadingProgress.wrappedValue, total: 100.00).padding()
-            HStack{
-                Text("url:" + viewModel.url)
-              
-
-//                LoaderView(tintColor: .red, scaleSize: 1.0).padding(.bottom,50).hidden(!$viewModel.uploading.wrappedValue)
+                else{
+                    Button(action: {
+                        let imgData = image.jpegData(compressionQuality: 1)!
+                        viewModel.uploadImage(imageData:imgData)
+                    }){
+                        
+                        Text("Upload")
+                            .font(.headline)
+                            .frame(minWidth: 0, maxWidth: 200, minHeight: 50, maxHeight: 50)
+                            .background(Color.cyan)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .padding(.horizontal)
+                    }
+                    
+                }
             }
-        }.frame(height: 160)
+            .padding(10)
+            .alert(isPresented: $viewModel.showAlert) {
+                Alert(title: Text("Error"), message: Text (viewModel.imagesUploadingError), dismissButton: .default(Text("OK")))
+            }
+            if (viewModel.uploading){
+                ProgressView("Uploading image...", value: $viewModel.uploadingProgress.wrappedValue, total: 1.00)
+                    .padding()
+            }
+            else if (viewModel.url.count > 0){
+                Text("Long press to copy the url to your clipboard").padding(5)
+                
+                Text("url: " + viewModel.url)
+                    .frame(alignment: .trailing)
+                    .contextMenu {
+                        Button(action: {
+                            UIPasteboard.general.string = viewModel.url
+                        }) {
+                            Text("Copy to clipboard")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
+            }
+        }.frame(minHeight: 130)
     }
 }
 
