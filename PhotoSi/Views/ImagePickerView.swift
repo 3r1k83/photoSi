@@ -25,7 +25,7 @@ struct ImagePickerView: View {
                         ImageUploadRow(image: pickerResult[imageIdx], uploadBar: "")
                     }.onDelete(perform: delete)
 
-                }.padding(.top, -100)
+                }
                     .onAppear() {
                         UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 40)
                     }
@@ -79,9 +79,7 @@ struct ImagePickerView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100)
-                        .padding(.top, -100)
-//                        .padding(.bottom, -100)
-                    
+                        .navigationBarTitleDisplayMode(.inline)                    
                     
                 }
             }

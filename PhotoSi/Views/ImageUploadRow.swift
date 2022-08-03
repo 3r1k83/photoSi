@@ -32,7 +32,8 @@ struct ImageUploadRow: View {
                             .foregroundColor(.white)
                             .cornerRadius(20)
                             .padding(.horizontal)
-                    }.accessibilityIdentifier("uploadButton")
+                    }.accessibilityIdentifier("uploadButton")            .buttonStyle(BorderlessButtonStyle())
+
                 }
                 else{
                     Button(action: {
@@ -47,7 +48,8 @@ struct ImageUploadRow: View {
                             .foregroundColor(.white)
                             .cornerRadius(20)
                             .padding(.horizontal)
-                    }
+                    }.buttonStyle(BorderlessButtonStyle())
+
                     
                 }
             }
@@ -60,7 +62,8 @@ struct ImageUploadRow: View {
                     .padding()
             }
             else if (viewModel.url.count > 0){
-                Text("Long press to copy the url to your clipboard").padding(5)
+                Text("Long press to copy the url to your clipboard").padding(3)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text("url: " + viewModel.url)
                     .frame(alignment: .trailing)
