@@ -24,9 +24,7 @@ struct ImagePickerView: View {
                     ForEach(0..<pickerResult.count, id:\.self) { imageIdx in
                         ImageUploadRow(image: pickerResult[imageIdx], uploadBar: "")
                     }.onDelete(perform: delete)
-//                    if imageToUpload != nil {
-//                        ImageUploadRow(image: imageToUpload, uploadBar: "")
-//                    }
+
                 }.padding(.top, -100)
                     .onAppear() {
                         UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 40)

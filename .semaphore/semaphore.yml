@@ -11,5 +11,4 @@ blocks:
         - name: swift test
           commands:
             - checkout
-            - swift build -v
             - swift test -v
