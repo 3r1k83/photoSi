@@ -93,6 +93,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		052520A0289A76FC0085614D /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				05FE04C0289692C1008097FF /* PhotoPicker.swift */,
+				0525209C289824310085614D /* CameraPicker.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		052520A1289A770C0085614D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				05FE04AF2895748B008097FF /* CountryPickerView.swift */,
+				05FE04BD28957702008097FF /* ImagePickerView.swift */,
+				05252098289728CD0085614D /* ImageUploadRow.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		05FE04792895745E008097FF = {
 			isa = PBXGroup;
 			children = (
@@ -117,11 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				05FE04852895745E008097FF /* PhotoSiApp.swift */,
-				05FE04AF2895748B008097FF /* CountryPickerView.swift */,
-				05FE04BD28957702008097FF /* ImagePickerView.swift */,
-				05FE04C0289692C1008097FF /* PhotoPicker.swift */,
-				0525209C289824310085614D /* CameraPicker.swift */,
-				05252098289728CD0085614D /* ImageUploadRow.swift */,
+				052520A1289A770C0085614D /* Views */,
+				052520A0289A76FC0085614D /* Picker */,
 				0525209E2898473C0085614D /* CustomNavBar.swift */,
 				05FE04BF2895783A008097FF /* Network */,
 				05FE04B5289574CF008097FF /* Models */,
